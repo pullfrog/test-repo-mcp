@@ -14,7 +14,7 @@ Each agent has its own configuration file with examples of both HTTP and local M
 
 ## MCP servers
 
-The configurations includes the MCP server:
+The configurations include the MCP server:
 
 ### robinMCP (Local/stdio)
 
