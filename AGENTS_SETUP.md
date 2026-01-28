@@ -12,12 +12,14 @@ Each agent has its own configuration file with examples of both HTTP and local M
 - **Gemini CLI**: `.gemini/settings.json`
 - **OpenCode**: `opencode.json`
 
-## Sample Servers
+## MCP servers
 
-The configurations include three example MCP servers:
+The configurations includes the MCP server:
 
-### 1. robinMCP Server (Local/stdio)
-- **Path**: `./mcp-servers/robin-mcp`
+### robinMCP (Local/stdio)
+
+Preparation: do `npm install` inside `./mcp-servers/robin-mcp` before using the server.
+
 - **Command**: `node ./mcp-servers/robin-mcp/build/index.js`
 - **Purpose**: Sample custom MCP server with a story tool
 - **Tools**: `tell_story` - Returns a story value
