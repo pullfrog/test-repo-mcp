@@ -6,7 +6,7 @@ This repository includes sample MCP (Model Context Protocol) server configuratio
 
 Each agent has its own configuration file with examples of both HTTP and local MCP servers:
 
-- **Claude Code**: `.claude/settings.json`
+- **Claude Code**: `.mcp.json`
 - **Cursor**: `.cursor/mcp.json`
 - **Codex CLI**: `.codex/config.toml`
 - **Gemini CLI**: `.gemini/settings.json`
