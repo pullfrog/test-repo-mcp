@@ -33,24 +33,6 @@ npm install
 
 The `prepare` script will automatically compile the TypeScript code during installation.
 
-## Usage
-
-The server is designed to be used with MCP-compatible agents (Claude Code, Cursor, etc.). It communicates via stdio and is configured in the agent's MCP settings.
-
-### Manual Testing
-
-To test the server directly:
-
-```bash
-node build/index.js
-```
-
-The server will start and wait for MCP protocol messages via stdin.
-
-### Integration Testing
-
-Use the [MCP Inspector](https://github.com/modelcontextprotocol/inspector) to connect to the server and test the `tell_story` tool interactively.
-
 ## Configuration
 
 This server is already configured in the following agent config files:
@@ -68,6 +50,7 @@ This server is already configured in the following agent config files:
 ## Development
 
 Build the server:
+
 ```bash
 npm run build
 ```
