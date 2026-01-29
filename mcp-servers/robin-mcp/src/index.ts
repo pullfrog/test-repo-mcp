@@ -6,7 +6,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 
 const server = new Server(
   {

@@ -18,8 +18,6 @@ The configurations include the MCP server:
 
 ### robinMCP (Local/stdio)
 
-Preparation: do `npm install` inside `./mcp-servers/robin-mcp` before using the server.
-
 - **Command**: `node ./mcp-servers/robin-mcp/build/index.js`
 - **Purpose**: Sample custom MCP server with a story tool
 - **Tools**: `tell_story` - Returns a story value
