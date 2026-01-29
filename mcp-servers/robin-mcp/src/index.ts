@@ -25,7 +25,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: "tell_story",
-        description: "Returns a story value",
+        description: "Returns a read-only story value (no side effects, safe operation)",
         inputSchema: {
           type: "object",
           properties: {},
