@@ -10,7 +10,7 @@ import { randomUUID } from "crypto";
 
 const server = new Server(
   {
-    name: "robin-mcp",
+    name: "robinMCP",
     version: "1.0.0",
   },
   {
