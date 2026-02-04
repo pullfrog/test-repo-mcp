@@ -46,15 +46,11 @@ function getTestValue(): string {
     return envValue;
   }
 
-  // fallback: read from file using PULLFROG_MCP_PORT to locate the env dir
-  const mcpPort = process.env.PULLFROG_MCP_PORT;
-  if (mcpPort) {
-    try {
-      const filePath = join("/tmp", `pullfrog-env-${mcpPort}`, "PULLFROG_MCP_TEST");
-      return readFileSync(filePath, "utf-8");
-    } catch {
-      // file doesn't exist
-    }
+  // fallback: read from file at fixed location
+  try {
+    return readFileSync("/tmp/pullfrog-env/PULLFROG_MCP_TEST", "utf-8");
+  } catch {
+    // file doesn't exist
   }
 
   return "NO_TEST_VALUE_FOUND";
