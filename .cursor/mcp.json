@@ -4,10 +4,7 @@
       "command": "node",
       "args": [
         "./mcp-servers/robin-mcp/build/index.js"
-      ],
-      "env": {
-        "PULLFROG_MCP_TEST": "${PULLFROG_MCP_TEST}"
-      }
+      ]
     }
   }
 }

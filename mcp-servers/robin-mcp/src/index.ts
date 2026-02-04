@@ -6,6 +6,8 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
+import { readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
 
 const server = new Server(
   {
@@ -38,13 +40,23 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "get_test_value") {
     try {
-      const value = process.env.PULLFROG_MCP_TEST;
+      // try env var first (works for Claude, Gemini, OpenCode)
+      let value = process.env.PULLFROG_MCP_TEST;
+      
+      // fallback: read from file in repo root (works for Cursor)
+      if (!value) {
+        const filePath = join(process.cwd(), ".pullfrog-mcp-test");
+        if (existsSync(filePath)) {
+          value = readFileSync(filePath, "utf-8").trim();
+        }
+      }
+
       if (!value) {
         return {
           content: [
             {
               type: "text",
-              text: JSON.stringify({ error: "PULLFROG_MCP_TEST environment variable not set" }, null, 2),
+              text: JSON.stringify({ error: "test value not found (checked env and file)" }, null, 2),
             },
           ],
           isError: true,
