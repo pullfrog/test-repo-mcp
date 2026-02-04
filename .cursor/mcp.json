@@ -6,7 +6,7 @@
         "./mcp-servers/robin-mcp/build/index.js"
       ],
       "env": {
-        "PULLFROG_MCP_TEST": "${env:PULLFROG_MCP_TEST}"
+        "PULLFROG_MCP_TEST": "${PULLFROG_MCP_TEST}"
       }
     }
   }
