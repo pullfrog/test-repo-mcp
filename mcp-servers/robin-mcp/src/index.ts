@@ -46,11 +46,14 @@ function getTestValue(): string {
     return envValue;
   }
 
-  // fallback: read from file at fixed location
-  try {
-    return readFileSync("/tmp/pullfrog-env/PULLFROG_MCP_TEST", "utf-8");
-  } catch {
-    // file doesn't exist
+  // fallback: read from HOME/.pullfrog-env (HOME is set per-test)
+  const home = process.env.HOME;
+  if (home) {
+    try {
+      return readFileSync(join(home, ".pullfrog-env", "PULLFROG_MCP_TEST"), "utf-8");
+    } catch {
+      // file doesn't exist
+    }
   }
 
   return "NO_TEST_VALUE_FOUND";
