@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { readFileSync } from "node:fs";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
@@ -35,12 +36,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
-// test nonce is passed as a process argument by the test runner.
-// this is the most agent-agnostic approach: process args are always forwarded
-// by MCP clients since they're part of the command definition itself.
+// when PULLFROG_MCP_SECRET_FILE is set, read the secret from that file;
+// otherwise fall back to process.argv[2] (test runner passes nonce as arg).
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "get_test_value") {
-    const value = process.argv[2] ?? "NO_TEST_VALUE_FOUND";
+    const secretPath = process.env.PULLFROG_MCP_SECRET_FILE;
+    const value =
+      secretPath !== undefined && secretPath !== ""
+        ? readFileSync(secretPath, "utf-8").trim()
+        : (process.argv[2] ?? "NO_TEST_VALUE_FOUND");
     return {
       content: [
         {
