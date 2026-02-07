@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
+
+// well-known path where the test runner writes the secret file.
+// used as fallback for agents whose CLIs don't pass parent env to MCP servers.
+const WELL_KNOWN_SECRET_PATH = "/tmp/pullfrog-mcp-secret/secret.txt";
 
 const server = new Server(
   {
@@ -36,20 +40,28 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
-// when PULLFROG_MCP_SECRET_FILE is set, read the secret from that file;
-// otherwise fall back to process.argv[2] (test runner passes nonce as arg).
+// resolve the secret value with a three-tier fallback:
+// 1. PULLFROG_MCP_SECRET_FILE env var (agents that inherit parent env)
+// 2. well-known path /tmp/pullfrog-mcp-secret/secret.txt (agents that don't)
+// 3. process.argv[2] (original nonce-based approach)
+function resolveTestValue(): string {
+  const envPath = process.env.PULLFROG_MCP_SECRET_FILE;
+  if (envPath && existsSync(envPath)) {
+    return readFileSync(envPath, "utf-8").trim();
+  }
+  if (existsSync(WELL_KNOWN_SECRET_PATH)) {
+    return readFileSync(WELL_KNOWN_SECRET_PATH, "utf-8").trim();
+  }
+  return process.argv[2] ?? "NO_TEST_VALUE_FOUND";
+}
+
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "get_test_value") {
-    const secretPath = process.env.PULLFROG_MCP_SECRET_FILE;
-    const value =
-      secretPath !== undefined && secretPath !== ""
-        ? readFileSync(secretPath, "utf-8").trim()
-        : (process.argv[2] ?? "NO_TEST_VALUE_FOUND");
     return {
       content: [
         {
           type: "text",
-          text: JSON.stringify({ value }, null, 2),
+          text: JSON.stringify({ value: resolveTestValue() }, null, 2),
         },
       ],
     };

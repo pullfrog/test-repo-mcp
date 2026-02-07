@@ -3,8 +3,7 @@
     "robinMCP": {
       "command": "node",
       "args": [
-        "./mcp-servers/robin-mcp/build/index.js",
-        "__PULLFROG_TEST_NONCE__"
+        "./mcp-servers/robin-mcp/build/index.js"
       ]
     }
   }
